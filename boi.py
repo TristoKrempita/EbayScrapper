@@ -1,7 +1,13 @@
 import requests
 from bs4 import BeautifulSoup
-pageNumber = 1
-url = "https://www.ebay.com/sch/i.html?_from=R40&_trksid=m570.l1313&_nkw=arduino&_sacat=0"#+str(pageNumber)
+
+userSearch = input("What do you want to search for?\n>")
+url = "https://www.ebay.com/sch/i.html?_from=R40&_trksid=m570.l1313&_nkw="
+userSearch = userSearch.split(' ')
+for search in userSearch:
+    url += search+"+"
+url = url[:-1]
+print(url)
 r_html = requests.get(url).text
 soup = BeautifulSoup(r_html,"html.parser")
 chr = soup.find_all('h3',class_="s-item__title")
@@ -49,7 +55,7 @@ for x in items:
         br+=1
         print(x.ime," | ",x.cijenaString," | ",x.link,"\n")
 
-with open('ebayList','w',encoding='utf-8') as file:
+with open('ebayList.txt','w',encoding='utf-8') as file:
     for x in items:
         if(x.cijena != None and x.cijena<filterCijena and x.cijena != -0.5):
             file.write(str(x.ime)+" | "+str(x.cijenaString)+" | "+str(x.link)+"\n")
