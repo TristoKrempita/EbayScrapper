@@ -24,6 +24,7 @@ for i in range(0,len(cijene)):
         cijeneFinal.append(cijene[i])
 values = [len(chr),len(cijeneFinal),len(links)]
 #print(values)
+filterCijenaMin = float(input("Lower limit filter price: "))
 filterCijena = float(input("Upper limit filter price: "))
 #print(">"+str(filterCijena))
 class item:
@@ -91,7 +92,7 @@ for x in freeShipping:
 #prints a list of items in the "Name | Price | LINK" format in a HTML file with clickable links
 with open('ebayList.html','w',encoding='utf-8') as file:
     for x in freeShipping:
-        if(x.cijena != None and x.cijena<filterCijena and x.cijena != -0.5):
+        if(x.cijena != None and x.cijena<filterCijena and x.cijena>filterCijenaMin and x.cijena != -0.5):
             br+=1
             file.write("<p>"+str(x.ime)+" | "+str(x.cijenaString)+" | "+"<a href = \""+str(x.link)+"\"> LINK </a>"+"</p>")
 print("Number of items: ",br)
