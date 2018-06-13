@@ -1,5 +1,5 @@
 # EbayScrapper
-<h1> <b>A small program that scraps HTML from a certain page on ebay and gets information using requests and BeautifulSoup </b></h1>
+<h1> <b>A small program that scraps HTML from a certain page on eBay and gets information using requests and BeautifulSoup </b></h1>
 
 <h2>Example output in a .html file : </h2>
 <h4>
