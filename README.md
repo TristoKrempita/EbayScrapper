@@ -41,5 +41,5 @@
    </strong>
   </h4>
   <p>
-The _LINK_ is a clickable URL for each item
+    The <i>LINK</i> is a clickable URL for each item
 </p>
