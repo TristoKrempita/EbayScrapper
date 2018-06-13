@@ -17,8 +17,6 @@ br=0
 cijeneFinal = []
 for i in range(0,len(cijene)):
     if((cijene[i].parent.parent.parent.parent.parent == cijene[i-1].parent.parent.parent.parent.parent)):
-        print(cijene[i].text)
-        print(cijene[i-1].text)
         continue
     else:
         cijeneFinal.append(cijene[i])
@@ -31,6 +29,7 @@ class item:
     cijena = None
     cijenaString = None
     link = None
+    parentTag = None
 
 replaced = ""
 items = []
@@ -47,7 +46,6 @@ for i in range(0,min(values)):
     items[i].cijenaString = cijeneFinal[i].text
     #turning the string we got from the price in the $3.45 format into a 3.45 float
     if(any(char.isdigit() for char in str(cijeneFinal[i].string))):
-        #TODO fix the big numbers being a problem by deleting all '.' characters and replacing all ',' characters with '.'
         if(',' in str(cijeneFinal[i].string)[1:]):
             replaced = str(cijeneFinal[i].string)[1:].replace(".","")
             replaced = replaced[:-2]
@@ -61,17 +59,40 @@ for i in range(0,min(values)):
         #print("|||"+str(float(str(cijeneFinal[i].text)[1:4])))
     #we assign the href memeber of the tag to the link variable of object
     items[i].link = links[i]['href']
+    items[i].parentTag = chr[i].parent.parent.parent
 
+#for x in items:
+#    print("Parent {}".format(items[i].parentTag))
 #sorting the array of objects by attribute cijena
-#items.sort(key=lambda x: x.cijena, reverse=False)
-#prints list of items until upper limit
+items.sort(key=lambda x: x.cijena, reverse=False)
+
+#TODO free shipping
+freeShipping = []
+for i in range(0,len(items)):
+    ship = items[i].parentTag.find_all("span",class_="s-item__shipping s-item__logisticsCost")
+    for s in ship:
+        if(s.text=="Free Shipping"):
+            freeShipping.append(items[i])
+
+
+#TODO merge rest of items with freeShipping
 for x in items:
+    if(x in freeShipping):
+        continue
+    else:
+        freeShipping.append(x)
+
+
+
+
+#prints list of items until upper limit
+for x in freeShipping:
     if(x.cijena != None and x.cijena<filterCijena and x.cijena != -0.5):
         br+=1
         print(x.ime," | ",x.cijenaString," | ",x.link,"\n")
 
-with open('ebayList.txt','w',encoding='utf-8') as file:
+with open('ebayList.html','w',encoding='utf-8') as file:
     for x in items:
         if(x.cijena != None and x.cijena<filterCijena and x.cijena != -0.5):
-            file.write(str(x.ime)+" | "+str(x.cijenaString)+" | "+str(x.link)+"\n")
+            file.write("<p>"+str(x.ime)+" | "+str(x.cijenaString)+" | "+"<a href = \""+str(x.link)+"\"> LINK </a>"+"</p>")
 print("Number of items: "+str(br))
